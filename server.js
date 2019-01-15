@@ -1,7 +1,7 @@
+//dotenv
 require('dotenv').config()
 
 // Dependencies 
-const config = require('./config');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const logger = require('morgan');

@@ -11,19 +11,48 @@ const Blog = require("../schemas/blog");
 
 // Route handlers
 const getHandler = (req, res) => {
-  Blog.find((err, data) => res.json({ success: true, data: data }));
+  Blog.find((err, data) => {
+    if (err) {
+      return res.send(err);
+    }
+    return res.json({ success: true, data: data });
+  });
 };
 
 const postHandler = (req, res) => {
-  res.send("POST handler for /blogs route");
+  let blogPost = new Blog();
+  const { title, body } = req.body;
+  blogPost.title = title;
+  blogPost.body = body;
+
+  blogPost.save(err => {
+    if (err) {
+      return res.json({ success: false, error: err });
+    }
+    return res.json({ success: true });
+  });
 };
 
 const updateHandler = (req, res) => {
-  res.send("UPDATE handler for /blogs route");
+  const { title, body } = req.body;
+
+  Blog.findOneAndUpdate((title, body, err) => {
+    if (err) {
+      return res.json({ success: false, error: err });
+    }
+    return res.json({ success: true });
+  });
 };
 
 const deleteHandler = (req, res) => {
-  res.send("DELETE handler for /blogs route");
+  const { id } = req.body;
+
+  Blog.findOneAndDelete((id, err) => {
+    if (err) {
+      return res.json({ success: false, error: err });
+    }
+    return res.json({ success: true });
+  });
 };
 
 // Setting routes
