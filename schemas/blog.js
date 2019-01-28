@@ -3,6 +3,7 @@ const Schema = mongoose.Schema;
 
 const blog = new Schema(
   {
+    id: Number,
     title: String,
     body: String
   },
@@ -11,4 +12,4 @@ const blog = new Schema(
   }
 );
 
-module.exports = mongoose.model('Blog', blog);
+module.exports = mongoose.model("Blog", blog);

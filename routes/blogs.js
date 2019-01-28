@@ -1,10 +1,5 @@
-// static const database endpoints
-const DB_API_GET = "/api/get";
-const DB_API_CREATE = "/api/post";
-const DB_API_DELETE = "/api/delete";
-const DB_API_UPDATE = "/api/update";
-
 // Imports
+const endpoints = require("./constants");
 const express = require("express");
 const router = express.Router();
 const Blog = require("../schemas/blog");
@@ -19,9 +14,10 @@ const getHandler = (req, res) => {
   });
 };
 
-const postHandler = (req, res) => {
+const createHandler = (req, res) => {
   let blogPost = new Blog();
-  const { title, body } = req.body;
+  const { id, title, body } = req.body;
+  blogPost.id = id;
   blogPost.title = title;
   blogPost.body = body;
 
@@ -34,20 +30,24 @@ const postHandler = (req, res) => {
 };
 
 const updateHandler = (req, res) => {
-  const { title, body } = req.body;
+  const { id, title, body } = req.body;
 
-  Blog.findOneAndUpdate((title, body, err) => {
-    if (err) {
-      return res.json({ success: false, error: err });
+  Blog.findOneAndUpdate(
+    { id: id },
+    { $set: { title: title, body: body } },
+    err => {
+      if (err) {
+        return res.json({ success: false, error: err });
+      }
+      return res.json({ success: true });
     }
-    return res.json({ success: true });
-  });
+  );
 };
 
 const deleteHandler = (req, res) => {
   const { id } = req.body;
 
-  Blog.findOneAndDelete((id, err) => {
+  Blog.findOneAndDelete({ id: id }, err => {
     if (err) {
       return res.json({ success: false, error: err });
     }
@@ -56,9 +56,9 @@ const deleteHandler = (req, res) => {
 };
 
 // Setting routes
-router.get(DB_API_GET, getHandler);
-router.post(DB_API_CREATE, postHandler);
-router.delete(DB_API_DELETE, deleteHandler);
-router.post(DB_API_UPDATE, updateHandler);
+router.get(endpoints.DB_API_GET, getHandler);
+router.post(endpoints.DB_API_CREATE, createHandler);
+router.delete(endpoints.DB_API_DELETE, deleteHandler);
+router.post(endpoints.DB_API_UPDATE, updateHandler);
 
 module.exports = router;
