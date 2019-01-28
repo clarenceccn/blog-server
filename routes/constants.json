@@ -1,0 +1,9 @@
+{
+  "LOGIN": "/login",
+  "AUTHENTICATE": "/verify",
+  "DB_API_GET": "/api/get",
+  "DB_API_CREATE": "/api/post",
+  "DB_API_DELETE": "/api/delete",
+  "DB_API_UPDATE": "/api/update",
+  "CORS_ALLOW_ORIGIN": ["http://localhost:3001", "http://localhost:3000"]
+}
